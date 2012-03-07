@@ -1,0 +1,18 @@
+{
+	"Name": "TestiMappi",
+	"LevelImage": "Mappi.png",
+	"Background": "",
+	"Width": 400,
+	"Height": 100,
+	"Actors": [{
+		"class": "Player",
+		"x": 10,
+		"y": 10,
+		"name": "pelaaja"
+	},
+	{
+		"class": "Enemy",
+		"x": 100,
+		"y": 10
+	}]
+}
