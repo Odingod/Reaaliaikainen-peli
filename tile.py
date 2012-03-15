@@ -10,7 +10,8 @@ class Tile(Sprite):
     F_FIRE = 2
     F_AWESOME = 3
     
-    def __init__(self, *flags):
+    def __init__(self, image, *flags):
         Sprite.__init__(self)
+        self.image = image
         self.flags = list(flags)
         
