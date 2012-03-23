@@ -1,5 +1,6 @@
 from character import Character
-from pygame.rect import Rect
+
+import pygame
 
 class Player(Character):
 
@@ -10,9 +11,12 @@ class Player(Character):
         eventMgr.register(self)
         
         self.keys = [False] * 5
-        #self.image, self.rect =load_image('ship.png',-1)
-        self.image = None
-        self.rect = Rect(0,0,0,0)
+        self.image = pygame.image.load("media/Character.png")
+        self.rect = self.image.get_rect()
+        self.rect.width = 47
+        self.rect.height = 64
+      
+        #self.image, self.rect = load_image('ship.png',-1)
         
     def update(self, dt):
         pass

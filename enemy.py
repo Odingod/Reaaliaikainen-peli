@@ -1,13 +1,13 @@
 
 from character import Character
-from pygame.rect import Rect
+import pygame
 
 class Enemy(Character):
 
     def __init__(self):
         Character.__init__(self)
-        self.image = None
-        self.rect = Rect(0,0,0,0)
+        self.image = pygame.image.load("media/character.png")
+        self.rect = self.image.get_rect()
 
     def update(self, dt):
         pass

@@ -1,9 +1,7 @@
-from pygame.sprite import Sprite
 
-TILESIZE = 16
+TILESIZE = 32
 
-
-class Tile(Sprite):
+class Tile():
 
     F_VISIBLE = 0
     F_SOLID = 1
@@ -11,7 +9,5 @@ class Tile(Sprite):
     F_AWESOME = 3
     
     def __init__(self, image, *flags):
-        Sprite.__init__(self)
         self.image = image
         self.flags = list(flags)
-        

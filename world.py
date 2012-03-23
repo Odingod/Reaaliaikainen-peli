@@ -17,22 +17,35 @@ class World(object):
     level = None
     actors = None
     levelImage = ""
+    background = None
     
     def __init__(self, game, eventMgr):
         self.game = game
         self.em = eventMgr
-        self.actors = Group()
+        self.actors = [ ]
+        self.level = Level()
 
     def loadLevel(self, filename):
-        self.level = Level()
         self.loadConfFile(filename)
-        self.level.loadLevel(self, self.levelImage)
+        self.level.load()
         
     def update(self, dt):
-        self.actors.update(dt)
-        #self.actors.draw(self.game.screen)
-        self.level.draw(self.game.screen)
+        #self.actors.update(dt)
 
+        # draw...
+        #self.game.screen.blit(self.background, (0,0))
+        self.level.draw(self.game.screen, self.game.viewport.topleft)
+
+        for actor in self.actors:
+            actor.draw(self.game.screen, self.game.viewport)
+        
+
+    def setCameraPos(x,y):
+        self.game.rect.topleft = (x,y)   
+        
+    def setCameraPos(x,y):
+        self.game.rect.center = (x,y)
+        
     def loadConfFile(self, filename):
         # ladataan json tiedosto
         try:
@@ -50,7 +63,7 @@ class World(object):
         self.name = data["Name"]
         self.width = data["Width"]
         self.height = data["Height"]
-        self.levelImage = data["LevelImage"]
+        self.level.levelImageFile = data["LevelImage"]
         
         print "Name:", data["Name"]
         print "Size:", data["Width"], "x", data["Height"]
@@ -79,7 +92,7 @@ class World(object):
             
             # tallennetaan actor    
             instance.rect.center = pos
-            self.actors.add( instance )
+            self.actors.append( instance )
             
         
 
