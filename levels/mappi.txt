@@ -1,18 +1,26 @@
 {
-	"Name": "TestiMappi",
-	"LevelImage": "levels/mappi.png",
-	"Background": "",
-	"Width": 400,
-	"Height": 100,
-	"Actors": [{
-		"class": "Player",
-		"x": 0,
-		"y": 0,
-		"name": "pelaaja"
+	"StartBlock" : {
+		"Height": 100,
+		"Next" : {
+			"UpBlock" : 100
+		},
+		"Objects" : [
+			{ "class" : "Block", "image": "BLAA.PNG", "x" : 100, "y" : 100, "height": 100, "width":100 },
+			{ "class" : "Block", "image": "BLAA.PNG", "x" : 200, "y" : 100, "height": 100, "width":100 },
+			{ "class" : "Platform", "image": "BLAA.PNG", "x" : 200, "y" : 100, "dstx": 300, "dsty":300, "speed":10, "height": 100, "width":100 }
+		]
 	},
-	{
-		"class": "Enemy",
-		"x": 100,
-		"y": 10
-	}]
+	"UpBlock" : {
+		"Height": 100,
+		"Next" : { 
+			"UpBlock" : 60,
+			"TurnLeft" : 20,
+			"TurnRight" : 20
+		},
+		"Objects" : [
+			{ "class" : "block", "image": "BLAA.PNG", "x" : 100, "y" : 100, "height": 100, "width":100 },
+			{ "class" : "block", "image": "BLAA.PNG", "x" : 100, "y" : 100, "height": 100, "width":100 }
+		]
+	}
+	
 }

@@ -1,10 +1,10 @@
-from pygame.sprite import Sprite
+
 from pygame.rect import Rect
 
-class Actor(Sprite):
+class Actor():
 
     def __init__(self):
-        Sprite.__init__(self)
+        pass
         
     def update(self, dt):
         pass
