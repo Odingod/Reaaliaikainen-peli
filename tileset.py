@@ -2,33 +2,27 @@ import pygame
 
 TILESIZE = 32
 
-class TileSet(object):
+class Tileset(object):
 
-    tiles = { }
+    height = 0
+    width = 0
     image = None
     
     def __init__(self):
         pass
 
-    def getTileImage(self, i):
-        try:
-            return self.tiles[i]
-        except ValueError:
-            return None
+    def getTile(self, i, w = 1, h = 1):
+        x = i % self.width
+        y = i // self.width
+        return self.image.subsurface( pygame.Rect( TILESIZE * x , TILESIZE * y , TILESIZE * w, TILESIZE * h ) )
     
     def load(self, filename):
-        print "loading tileset"
         try:
             self.image = pygame.image.load(filename) #.convert()
         except pygame.error as e:
             raise Exception("Failed to load tileset-image\n" + str(e))
 
-        width, height = self.image.get_size()
-        width //= TILESIZE
-        height //= TILESIZE
-        print "tiles:",  width, height
-
-        for x in range(width):
-            for y in range(height):
-                r = pygame.Rect(x*(TILESIZE+1), y*(TILESIZE+1), TILESIZE, TILESIZE)
-                self.tiles[x+width*y] = self.image.subsurface( r )
+        self.width, self.height = self.image.get_size()
+        self.width //= TILESIZE
+        self.height //= TILESIZE
+        

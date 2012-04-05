@@ -43,6 +43,7 @@ class Chunk(object):
             # lisataan objects-tauluun lisaa arvoja joita voidaan tarjota objektin alustuksessa
             obj["pos"] = pos = (self.rect.left - obj["x"], self.rect.top - obj["y"])
             obj["eventMgr"] = self.em
+            obj["world"] = self.world
             obj["b2World"] = self.world.b2World
 
             # karsitaan params listaan vain ne parametrit jotka tarvitaan

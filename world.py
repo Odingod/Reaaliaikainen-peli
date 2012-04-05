@@ -5,6 +5,7 @@ from chunk import *
 
 import Box2D
 
+from tileset import *
 
 class World(object):
 
@@ -12,12 +13,15 @@ class World(object):
     background = None
     chunkdata = None
     b2World = None
+    tileset = None
     
     def __init__(self, game, eventMgr):
         self.game = game
         self.em = eventMgr
 
     def loadLevel(self, filename):
+        self.tileset = Tileset()
+        self.tileset.load("media/Tiles.png")
         self.loadChunkFile(filename)
         
         self.b2World = Box2D.b2World( gravity=(0,10), doSleep=True)
@@ -54,9 +58,8 @@ class World(object):
             return
         except ValueError as e:
             print "Failed to parse json-file:", e
-            return
+            raise
             
 if __name__ == "__main__":
-    import events
-    w = World(None, events.EventManager())
-    w.loadConfFile("levels/mappi.txt")
+    pass
+    

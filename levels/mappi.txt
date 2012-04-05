@@ -5,9 +5,8 @@
 			"UpBlock" : 100
 		},
 		"Objects" : [
-			{ "class" : "Block", "image": "BLAA.PNG", "x" : 100, "y" : 100, "height": 100, "width":100 },
-			{ "class" : "Block", "image": "BLAA.PNG", "x" : 200, "y" : 100, "height": 100, "width":100 },
-			{ "class" : "Platform", "image": "BLAA.PNG", "x" : 200, "y" : 100, "dstx": 300, "dsty":300, "speed":10, "height": 100, "width":100 }
+			{ "class" : "Block", "tile": 0, "x" : 100, "y" : 100, "height": 2, "width":5 },
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 2, "x" : 300, "y" : 100, "height": 4, "width":4 }
 		]
 	},
 	"UpBlock" : {
