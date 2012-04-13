@@ -1,11 +1,13 @@
 
+B2SCALE = 0.01
+
 import json
-
-from chunk import *
-
 import Box2D
 
+from chunk import *
 from tileset import *
+
+import player
 
 class World(object):
 
@@ -24,22 +26,31 @@ class World(object):
         self.tileset.load("media/Tiles.png")
         self.loadChunkFile(filename)
         
-        self.b2World = Box2D.b2World( gravity=(0,10), doSleep=True)
+        self.b2World = Box2D.b2World( gravity=(0,50), doSleep=True)
         
-        self.chunks.append( self.createChunk("StartBlock") )
+        self.chunks.append( self.createChunk("StartChunk") )
+        
+        self.player = player.Player( self.b2World, self.em, (100,100) )
         
     def createChunk(self, name):
         return Chunk( self, (0,0), self.chunkdata[name] )
         
     def update(self, dt):
 
-        self.b2World.Step(dt/1000, 6, 2)
+        self.b2World.Step( 1 / 60.0, 6, 2)
         self.b2World.ClearForces()
+        
+        self.player.update(dt)
+        self.player.draw(self.game.screen, self.game.viewport)
         
         for chunk in self.chunks:
             chunk.update(dt)
             chunk.draw(self.game.screen, self.game.viewport)
         
+        
+        if self.chunks[-1].rect in self.game.viewport:
+            pass
+            
 
     def setCameraPos(x,y):
         self.game.rect.topleft = (x,y)   

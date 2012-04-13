@@ -1,6 +1,6 @@
 import pygame
 
-TILESIZE = 32
+from tile import TILESIZE
 
 class Tileset(object):
 
@@ -14,7 +14,7 @@ class Tileset(object):
     def getTile(self, i, w = 1, h = 1):
         x = i % self.width
         y = i // self.width
-        return self.image.subsurface( pygame.Rect( TILESIZE * x , TILESIZE * y , TILESIZE * w, TILESIZE * h ) )
+        return self.image.subsurface( pygame.Rect( TILESIZE * x, TILESIZE * y , TILESIZE * w, TILESIZE * h ) )
     
     def load(self, filename):
         try:

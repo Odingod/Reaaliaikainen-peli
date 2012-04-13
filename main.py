@@ -37,8 +37,8 @@ class Mainloop:
     def run(self):
         try:
             self.running = True
-            while self.running:
-                scale = self.clock.tick(60) * 60 / 1000.
+            while self.running: 
+                scale = self.clock.tick(60) * 60 / 1000
                 self.em.tell(TickEvent(scale))
         finally:
             self.em.tell('Destroy')

@@ -24,10 +24,9 @@ class Game(object):
         except:
             pygame.quit()
             raise # continue catched exception
-            
         
         self.em.tell("GameStart")
-        
+
 
     def notify(self,event):
         if event.name == 'Tick':
@@ -45,7 +44,6 @@ class Game(object):
             elif keys[pygame.K_a]:
                 self.viewport.left -= 4
             
-            #self.screen.blit(self.view, pygame.Rect(0,0,800,600))
             #self.viewport
             # all the drawing stuff...
             self.world.update(dt)

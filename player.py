@@ -2,25 +2,46 @@ from character import Character
 
 import pygame
 
+from world import B2SCALE
+
 class Player(Character):
 
-    def __init__(self, eventMgr, name="default"):
+    def __init__(self, b2World, eventMgr, pos):
         Character.__init__(self)
-        print "Init Player! name:", name
+        
         self.em = eventMgr
         eventMgr.register(self)
         
         self.keys = [False] * 5
         self.image = pygame.image.load("media/Character.png")
         self.rect = self.image.get_rect()
+        self.rect.topleft = pos
         self.rect.width = 47
         self.rect.height = 64
-      
+        
+        self.createBody(b2World, self.rect.width, self.rect.height )
+        
         #self.image, self.rect = load_image('ship.png',-1)
         
+    def canJump(self):
+        if abs(self.body.linearVelocity[1] ) > 0.1:
+            return False
+        for contact_edge in self.body.contacts:
+            c = contact_edge.contact
+            if c.manifold.localNormal[1] < -0.7:
+                return True
+        return False
+        
     def update(self, dt):
-        pass
- 
+        Character.update(self, dt)
+        if self.keys[2]:
+            self.body.linearVelocity = (-400 * B2SCALE, self.body.linearVelocity[1] )
+        if self.keys[3]:
+            self.body.linearVelocity = (400 * B2SCALE, self.body.linearVelocity[1] )
+        if self.keys[1] and self.canJump():
+            self.body.ApplyLinearImpulse(impulse=(0, -480 * B2SCALE), point=(0,0))
+            pass 
+            
     def notify(self, event):
         if event.name == 'Keyboard':
             key = event.key
