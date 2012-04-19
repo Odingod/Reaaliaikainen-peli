@@ -1,9 +1,11 @@
 import player, enemy
-from pygame.rect import Rect
+#from pygame.rect import Rect
+from pygame import *
 
 from block import *
 from platform import *
 from inspect import getargspec
+import random
 
 OBJECTS = {
     "Enemy": enemy.Enemy,
@@ -17,7 +19,7 @@ class Chunk(object):
     objects = [ ]
     em = None
     def __init__(self, world, pos, data):
-        self.rect = Rect(pos[0], pos[1], data["Height"], 800)
+        self.rect = Rect(pos[0], pos[1], 800, data["Height"])
         self.world = world
         self.next = data["Next"]
         self._buildObjects(data["Objects"])
@@ -28,11 +30,17 @@ class Chunk(object):
             obj.update(dt)
 
     def draw(self, screen, viewport):
+        
         for obj in self.objects:
             obj.draw(screen, viewport)
+        pygame.draw.rect(screen, pygame.color.Color('red'), (self.rect.left - viewport.left, \
+            self.rect.top - viewport.top, \
+            self.rect.width, self.rect.height), 2)
     
-    def getNext(r):
-        return None
+    def getNext(self):
+        if len(self.next.keys()) == 1:
+            nextone = self.next.keys()[0]
+        return nextone
         
     def _buildObjects(self, objects):
         for obj in objects:
@@ -41,7 +49,7 @@ class Chunk(object):
                 continue
 
             # lisataan objects-tauluun lisaa arvoja joita voidaan tarjota objektin alustuksessa
-            obj["pos"] = pos = (self.rect.left - obj["x"], self.rect.top - obj["y"])
+            obj["pos"] = (self.rect.left + obj["x"], self.rect.top + obj["y"])
             obj["eventMgr"] = self.em
             obj["world"] = self.world
             obj["b2World"] = self.world.b2World
