@@ -1,4 +1,3 @@
-
 B2SCALE = 0.01
 
 import json
@@ -26,14 +25,18 @@ class World(object):
         self.tileset.load("media/Tiles.png")
         self.loadChunkFile(filename)
         
-        self.b2World = Box2D.b2World( gravity=(0,50), doSleep=True)
+        self.b2World = Box2D.b2World( gravity=(0,40), doSleep=True)
         
         self.chunks.append( self.createChunk("StartChunk") )
         
         self.player = player.Player( self.b2World, self.em, (100,100) )
         
     def createChunk(self, name):
-        return Chunk( self, (0,0), self.chunkdata[name] )
+        if len(self.chunks) > 0:
+            pos = (0, self.chunks[-1].rect.top-self.chunkdata[name]['Height'])
+        else:
+            pos = (0,0)
+        return Chunk( self, pos, self.chunkdata[name] )
         
     def update(self, dt):
 
@@ -48,8 +51,11 @@ class World(object):
             chunk.draw(self.game.screen, self.game.viewport)
         
         
-        if self.chunks[-1].rect in self.game.viewport:
-            pass
+        if self.chunks[-1].rect.colliderect(self.game.viewport):
+            print 'new chunk created'
+            self.chunks.append(self.createChunk(self.chunks[-1].getNext()))
+            if len(self.chunks) > 3:
+                self.chunks.remove(self.chunks[0])
             
 
     def setCameraPos(x,y):
