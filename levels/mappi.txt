@@ -1,6 +1,6 @@
 {
 	"StartChunk" : {
-		"Height": 600,
+		"Height": 608,
 		"Next" : {
 			"UpChunk" : 100
 		},
@@ -16,7 +16,7 @@
 		]
 	},
 	"UpChunk" : {
-		"Height": 600,
+		"Height": 608,
 		"Next" : { 
 			"UpChunk" : 100
 		},
