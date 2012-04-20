@@ -13,7 +13,7 @@ class Block(Actor):
         
         self.tilew = tilew
         self.tileh = tileh
-         
+        self.world = world
         self.image = world.tileset.getTile(tile, tilew, tileh)
         
         w = width * TILESIZE * B2SCALE * 0.5
@@ -26,6 +26,9 @@ class Block(Actor):
 
         bshape = Box2D.b2PolygonShape( box=(w, h, (w, h), 0) )
         self.body.CreateFixture(shape=bshape, density=1)
+       
+    def __del__(self):
+        self.world.b2World.DestroyBody(self.body)
         
     def draw(self, screen, viewport):
         Actor.drawTiled(self, screen, viewport)

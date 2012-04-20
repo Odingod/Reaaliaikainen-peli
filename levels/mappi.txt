@@ -1,6 +1,6 @@
 {
 	"StartChunk" : {
-		"Height": 100,
+		"Height": 600,
 		"Next" : {
 			"UpChunk" : 100
 		},
@@ -11,17 +11,24 @@
 			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 200, "y" : 400, "height": 1, "width":4 },
 			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 100, "y" : 300, "height": 1, "width":4 },
 			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 400, "y" : 250, "height": 1, "width":4 },
-			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 500, "y" : 150, "height": 1, "width":4 }
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 500, "y" : 150, "height": 1, "width":4 },
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 350, "y" : 50, "height": 1, "width":4 }
 		]
 	},
 	"UpChunk" : {
-		"Height": 100,
+		"Height": 600,
 		"Next" : { 
 			"UpChunk" : 100
 		},
 		"Objects" : [
-			{ "class" : "block", "image": "BLAA.PNG", "x" : 100, "y" : 100, "height": 100, "width":100 },
-			{ "class" : "block", "image": "BLAA.PNG", "x" : 100, "y" : 100, "height": 100, "width":100 }
+			{ "class" : "Block", "tile": 0, "x" : 0, "y" : 0, "height": 19, "width":2 },
+			{ "class" : "Block", "tile": 0, "x" : 736, "y" : 0, "height": 19, "width":2 },
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 300, "y" : 50, "height": 1, "width":4 },
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 200, "y" : 400, "height": 1, "width":4 },
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 100, "y" : 300, "height": 1, "width":4 },
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 400, "y" : 250, "height": 1, "width":4 },
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 500, "y" : 150, "height": 1, "width":4 },
+			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 250, "y" : 530, "height": 1, "width":4 }
 		]
 	}
 	

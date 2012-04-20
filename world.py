@@ -40,7 +40,7 @@ class World(object):
         
     def update(self, dt):
 
-        self.b2World.Step( 1 / 60.0, 6, 2)
+        self.b2World.Step( 1 / 60.0, 6, 3)
         self.b2World.ClearForces()
         
         self.player.update(dt)
@@ -58,11 +58,11 @@ class World(object):
                 self.chunks.remove(self.chunks[0])
             
 
-    def setCameraPos(x,y):
-        self.game.rect.topleft = (x,y)   
+    def setCameraPos(self, x,y):
+        self.game.viewport.topleft = (x,y)   
         
-    def setCameraCenter(x,y):
-        self.game.rect.center = (x,y)
+    def setCameraCenter(self, x,y):
+        self.game.viewport.center = (x,y)
                 
     def loadChunkFile(self, filename):
         # ladataan json tiedosto

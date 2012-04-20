@@ -18,17 +18,15 @@ class Player(Character):
         self.rect.topleft = pos
         self.rect.width = 47
         self.rect.height = 64
-        
+        self.jumped = False
         self.createBody(b2World, self.rect.width, self.rect.height )
-        
-        #self.image, self.rect = load_image('ship.png',-1)
         
     def canJump(self):
         if abs(self.body.linearVelocity[1] ) > 0.1:
             return False
         for contact_edge in self.body.contacts:
             c = contact_edge.contact
-            if c.manifold.localNormal[1] < -0.7:
+            if c.manifold.localNormal[1] < -0.9:
                 return True
         return False
         
@@ -38,9 +36,12 @@ class Player(Character):
             self.body.linearVelocity = (-400 * B2SCALE, self.body.linearVelocity[1] )
         if self.keys[3]:
             self.body.linearVelocity = (400 * B2SCALE, self.body.linearVelocity[1] )
-        if self.keys[1] and self.canJump():
-            self.body.ApplyLinearImpulse(impulse=(0, -480 * B2SCALE), point=(0,0))
-            pass 
+        if self.keys[1]:
+            if abs(self.body.linearVelocity[1] ) < 0.01:
+                self.body.ApplyLinearImpulse(impulse=(0, -480 * B2SCALE), point=(0,0))
+                self.jumped = True
+        else:
+            self.jumped = False
             
     def notify(self, event):
         if event.name == 'Keyboard':

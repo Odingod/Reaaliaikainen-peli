@@ -20,8 +20,7 @@ class Character(Actor):
         bodyDef.fixedRotation = True
         bodyDef.position = (B2SCALE * self.rect.left, B2SCALE * self.rect.top)
         bodyDef.bullet = True
-        bodyDef.linearDamping = 5.0
-        bodyDef.angularDamping = 69
+        bodyDef.linearDamping = 6.0
         self.body = b2world.CreateBody(bodyDef)
         w /= 2
         h /= 2

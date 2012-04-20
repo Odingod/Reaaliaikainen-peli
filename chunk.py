@@ -6,7 +6,7 @@ from block import *
 from platform import *
 from inspect import getargspec
 import random
-
+import sys
 OBJECTS = {
     "Enemy": enemy.Enemy,
     "Block": Block,
@@ -15,15 +15,14 @@ OBJECTS = {
 
 class Chunk(object):
 
-    next = { }
-    objects = [ ]
     em = None
     def __init__(self, world, pos, data):
         self.rect = Rect(pos[0], pos[1], 800, data["Height"])
         self.world = world
+        self.objects = [ ]
         self.next = data["Next"]
         self._buildObjects(data["Objects"])
-        
+
         
     def update(self, dt):
         for obj in self.objects:
@@ -36,7 +35,7 @@ class Chunk(object):
         pygame.draw.rect(screen, pygame.color.Color('red'), (self.rect.left - viewport.left, \
             self.rect.top - viewport.top, \
             self.rect.width, self.rect.height), 2)
-    
+
     def getNext(self):
         if len(self.next.keys()) == 1:
             nextone = self.next.keys()[0]
