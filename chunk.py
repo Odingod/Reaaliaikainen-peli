@@ -1,4 +1,4 @@
-import player, enemy, pickup
+import player, enemy, pickup_orb
 #from pygame.rect import Rect
 from pygame import *
 
@@ -11,7 +11,7 @@ OBJECTS = {
     "Enemy": enemy.Enemy,
     "Block": Block,
     "Platform": Platform,
-    "Pickup": pickup.Pickup
+    "Pickup": pickup_orb.PickupOrb
 }
 
 class Chunk(object):
