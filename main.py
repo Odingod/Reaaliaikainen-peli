@@ -34,12 +34,15 @@ class Mainloop:
 
         self.running = True
     
+    
+    
     def run(self):
         try:
             self.running = True
             while self.running: 
                 scale = self.clock.tick(60) * 60 / 1000
                 self.em.tell(TickEvent(scale))
+                print self.clock.get_fps()
         finally:
             self.em.tell('Destroy')
             
