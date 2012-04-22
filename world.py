@@ -36,7 +36,7 @@ class World(object):
             pos = (0, self.chunks[-1].rect.top-self.chunkdata[name]['Height'])
         else:
             pos = (0,0)
-        return Chunk( self, pos, self.chunkdata[name] )
+        return Chunk( self, pos, self.chunkdata[name], self.em)
         
     def update(self, dt):
 

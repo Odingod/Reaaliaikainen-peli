@@ -45,7 +45,10 @@ class KillEvent(Event):
         Event.__init__(self, 'kill')
         self.drop=drop
         self.enemy=enemy
-
+class PickupEvent(Event):
+    def __init__(self, pickup):
+        Event.__init__(self, "Pickup")
+        self.pickup = pickup
 class EventManager:
     def __init__(self):
         from weakref import WeakKeyDictionary
