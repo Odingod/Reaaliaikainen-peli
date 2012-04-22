@@ -35,6 +35,9 @@ class Player(Character):
         self.rect.width = 32
         self.rect.height = 32
 
+        self.score = 0.0
+        self.max_height = 0
+
         self.createBody(b2World, self.rect.width, self.rect.height )
 
         
@@ -77,6 +80,10 @@ class Player(Character):
         self.going_right = self.body.linearVelocity[0] > 0.1
         self.update_animation(dt)
         self.update_pickups(dt)
+       
+        self.score += 0.01
+        if self.rect.top < self.max_height:
+            self.max_height = self.rect.top
 
     def update_animation(self, dt):
         self.animation_step += dt
@@ -127,3 +134,4 @@ class Player(Character):
                 self.keys[4]=event.up
         elif event.name == 'Pickup':
             self.pickups.append(event.pickup)
+            self.score += 10
