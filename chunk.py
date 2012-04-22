@@ -1,4 +1,4 @@
-import player, enemy
+import player, enemy, pickup
 #from pygame.rect import Rect
 from pygame import *
 
@@ -10,14 +10,16 @@ import sys
 OBJECTS = {
     "Enemy": enemy.Enemy,
     "Block": Block,
-    "Platform": Platform
+    "Platform": Platform,
+    "Pickup": pickup.Pickup
 }
 
 class Chunk(object):
 
     em = None
-    def __init__(self, world, pos, data):
+    def __init__(self, world, pos, data, eventMgr):
         self.rect = Rect(pos[0], pos[1], 800, data["Height"])
+        self.em = eventMgr
         self.world = world
         self.objects = [ ]
         self.next = data["Next"]

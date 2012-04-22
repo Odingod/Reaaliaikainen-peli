@@ -49,7 +49,7 @@ class Player(Character):
                 self.jumped = True
         else:
             self.jumped = False
-        
+            
         self.going_left = self.body.linearVelocity[0] < -0.1
         self.going_right = self.body.linearVelocity[0] > 0.1
         self.update_animation(dt)
