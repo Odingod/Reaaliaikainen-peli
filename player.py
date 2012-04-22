@@ -21,6 +21,7 @@ class Player(Character):
         self.frame = 0
         self.going_left = False
         self.going_right = False
+        self.upsidedown = False
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
         self.rect.width = 32
@@ -49,6 +50,12 @@ class Player(Character):
                 self.jumped = True
         else:
             self.jumped = False
+
+        self.upsidedown = False        
+        for contact_edge in self.body.contacts:
+            if contact_edge.contact.touching:
+                if contact_edge.other.position[1] - self.body.position[1] < 0:
+                    self.upsidedown = True
             
         self.going_left = self.body.linearVelocity[0] < -0.1
         self.going_right = self.body.linearVelocity[0] > 0.1

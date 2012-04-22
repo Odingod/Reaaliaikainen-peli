@@ -22,14 +22,14 @@ class Pickup(Actor):
         bodyDef.type = Box2D.b2_staticBody
         bodyDef.position = (B2SCALE * (self.rect.left + 0.5 * self.rect.width), B2SCALE * (self.rect.top + 0.5 * self.rect.height))
         self.body = world.b2World.CreateBody(bodyDef)
-        r = self.rect.width * B2SCALE * 0.5
+        r = B2SCALE * self.rect.width * 0.5
         self.body.CreateCircleFixture(radius=r)
         
     def notify(self, event):
         pass
 
     def update(self, dt):
-        if self.body.contacts:
+        if self.body.contacts and self.body.contacts[0].contact.touching:
             self.picked = True
             if self.body.fixtures:
                 self.body.DestroyFixture(self.body.fixtures[0])
