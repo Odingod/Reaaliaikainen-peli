@@ -35,7 +35,6 @@ class Mainloop:
         self.running = True
     
     
-    
     def run(self):
         try:
             self.running = True

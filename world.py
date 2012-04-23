@@ -33,17 +33,8 @@ class World(object):
         self.b2World = Box2D.b2World( gravity=(0,40), doSleep=True)
         
         self.player = player.Player( self.b2World, self.em, (100,100) )
-        self.createRandomChunks(2)
-        #self.chunks.append( self.createChunk("StartChunk") )
-        
-        self.player = player.Player( self.b2World, self.em, (game.WIDTH /2,game.HEIGHT - 100) )
-        
-    def createChunk(self, name):
-        if len(self.chunks) > 0:
-            pos = (0, self.chunks[-1].rect.top-self.chunkdata[name]['Height'])
-        else:
-            pos = (0,0)
-        return Chunk( self, pos, self.chunkdata[name], self.em)
+        self.createChunks(2)
+        self.player = player.Player( self.b2World, self.em, (game.WIDTH /2,game.HEIGHT - 100))
         
     def update(self, dt):
 
@@ -64,7 +55,7 @@ class World(object):
             # Spawn a new chunk creating thread, this needs to be handled in its own
             # thread so that the game doesn't jam while we're creating the yet unseen
             # parts of the world
-            ChunkCreationThread(self).start()
+            ChunkCreationThread(self, 1).start()
             
             if len(self.chunks) > 10:
                 self.chunks.remove(self.chunks[0])
@@ -76,7 +67,7 @@ class World(object):
     def setCameraCenter(self, x,y):
         self.game.viewport.center = (x,y)
     
-    def createRandomChunks(self, num = 1):
+    def createChunks(self, num =1):
         pickup_probability = [10.0, 20.0, 10.0, 0.05]
         pickup_type = ["double_jump", "jumping_power", "trampoline", "no_hurry"]
         
@@ -86,7 +77,10 @@ class World(object):
         # 2. Calculate the maximum Y distance with the calculated velocity
         Y_DIST_MAX = (((velocity*velocity)/(2*self.b2World.gravity.y))/Settings.B2SCALE)/2.5 #TODO: REMOVE DIVISION BY 4, JUST TESTING
         Y_DIST_MAX *= -1 
-        Y_DIST_MIN = Y_DIST_MAX/2.0
+        Y_DIST_MIN = Y_DIST_MAX/1.5
+        
+        if (Y_DIST_MIN < self.player.rect.height):
+            Y_DIST_MIN = (self.player.rect.height)*-1 - 10
         
         for i in range(num):
             if len(self.chunks) > 0:
@@ -109,36 +103,37 @@ class World(object):
             
             while (abs(reachable_height) < abs(chunk_pos[1]) + abs(Settings.CHUNK_HEIGHT)): 
                 # Block width and height (tile units)
-                BLOCK_WIDTH = random.randint(3, 8)
+                BLOCK_WIDTH = random.randint(3, 12)
                 BLOCK_HEIGHT = 1
                 BLOCK_TILE = 1
                 
-                # 3. Determine an interval [Y_MIN, Y_MAX]
+                # Determine an interval [Y_MIN, Y_MAX]
                 
                 # If this chunk has blocks the interval is relative to the other
                 # blocks of the chunk
                 if (len(blocks) > 0):
-                    Y_MIN = Y_DIST_MIN + blocks[-1].rect.top + blocks[-1].rect.height
-                    Y_MAX = Y_DIST_MAX + blocks[-1].rect.top + blocks[-1].rect.height
+                    Y_MIN = Y_DIST_MIN + blocks[-1].rect.top + (blocks[-1].rect.height * -1)
+                    Y_MAX = Y_DIST_MAX + blocks[-1].rect.top + (blocks[-1].rect.height * -1)
                 # If there were no blocks and there are other chunks the interval is relative
                 # to the last chunk of the other block
                 elif (len(self.chunks) > 0):
-                    Y_MIN = Y_DIST_MIN + self.chunks[-1].objects[-3].rect.top + self.chunks[-1].objects[-3].rect.height
-                    Y_MAX = Y_DIST_MAX + self.chunks[-1].objects[-3].rect.top + self.chunks[-1].objects[-3].rect.height
+                    Y_MIN = Y_DIST_MIN + self.chunks[-1].objects[-3].rect.top + (self.chunks[-1].objects[-3].rect.height * -1)
+                    Y_MAX = Y_DIST_MAX + self.chunks[-1].objects[-3].rect.top + (self.chunks[-1].objects[-3].rect.height * -1)
                 # In case there were no chunks nor blocks, the interval is only relative to
                 # the maximum distance the player can jump.
                 else:
-                    Y_MIN = Y_DIST_MIN + chunk_pos[1] + Settings.CHUNK_HEIGHT
-                    Y_MAX = Y_DIST_MAX + chunk_pos[1] + Settings.CHUNK_HEIGHT
+                    Y_MIN = Y_DIST_MIN + chunk_pos[1] + (Settings.CHUNK_HEIGHT * -1)
+                    Y_MAX = Y_DIST_MAX + chunk_pos[1] + (Settings.CHUNK_HEIGHT * -1)
                 
-                # 4. Get a random coordinate for Y from the interval
+                
+                # Get a random coordinate for Y from the interval
                 block_y = random.uniform(Y_MIN, Y_MAX)
                 
-                # 5. Calculate the maximum X distance for the given Y distance
+                # Calculate the maximum X distance for the given Y distance
                 k = 4.0
                 temp = k * (Y_MAX - block_y)
                 
-                # 6. Determine an interval [X_MIN, X_MAX]
+                # Determine an interval [X_MIN, X_MAX]
                 if (len(blocks) > 0):
                     X_MIN = blocks[-1].rect.right - blocks[-1].rect.width - abs(temp)
                     X_MAX = blocks[-1].rect.left + blocks[-1].rect.width + abs(temp)
@@ -154,12 +149,11 @@ class World(object):
                 if (X_MAX + (BLOCK_WIDTH * TILESIZE) > Settings.CHUNK_WIDTH):
                     X_MAX = Settings.CHUNK_WIDTH - BLOCK_WIDTH * TILESIZE
                                 
-                # 7. Get a random coordinate for X from the interval 
+                # Get a random coordinate for X from the interval 
                 block_x = random.uniform(X_MIN, X_MAX)
                 
-                # 8. Create a block at coordinates and append in to the blocks array 
+                # Create a block at coordinates and append in to the blocks array 
                 blocks.append(Block((block_x, block_y), self, BLOCK_TILE, BLOCK_WIDTH, BLOCK_HEIGHT))
-                
                 
                 pup = random.randint(0, len(pickup_type)-1)
                 if (100.0 - random.uniform(0.0, 100.0) < pickup_probability[pup]):
@@ -178,18 +172,22 @@ class World(object):
             objects.extend(blocks)
         
             # 9. Create the chunk with the blocks
-
             self.chunks.append(Chunk(self, chunk_pos, Settings.CHUNK_WIDTH, Settings.CHUNK_HEIGHT, objects, self.em))
-        
+
+
+# This thread is used to specifically create chunks so that the playing experience is not
+# affected by the creation process
 class ChunkCreationThread(threading.Thread):
 
-    def __init__(self, world):
+    def __init__(self, world, num =1):
         self.world = world
+        self.num = num
         threading.Thread.__init__(self)
 
     def run(self):
-        self.world.createRandomChunks()
+        self.world.createChunks(self.num)
         
+
 
 if __name__ == "__main__":
     pass
