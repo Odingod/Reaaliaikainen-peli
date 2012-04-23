@@ -40,9 +40,20 @@ class Game(object):
                 dt = event.time # deltatime
                 #if dt != 0:
                 #    print "FPS:",1000/dt
+              
+                speed = 0 if self.world.player.has_pickup("no_hurry") else 2
+                speed += 15 if self.world.player.rect.top - self.viewport.centery < -int( 0.3 * Settings.SCREEN_HEIGHT) else 0
+                center_y = self.viewport.centery - speed * dt
+                self.viewport.center = ( 400, center_y)
+#                print self.viewport.center
                 
-                self.viewport.center = ( 400, self.viewport.centery - 1 * dt)
-                
+                if self.viewport.center[1] < self.world.player.rect.top + self.world.player.rect.height - self.world.player.trampoline_height and self.world.player.has_pickup("trampoline"):
+                    self.world.player.jump()
+                elif self.viewport.center[1] < self.world.player.rect.top - 300:
+                    self.game_over = True
+                    self.em.tell(PointEvent(int(self.world.player.score+abs(self.world.player.max_height*0.1))))
+                    return
+
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_w]:
                     self.viewport.top -= 10
@@ -62,39 +73,22 @@ class Game(object):
                 #if (self.world.player.rect.topleft[1] > self.viewport.bottomleft[1]):
                     #self.endGame()
            
-            self.screen.fill((0,0,0))
-            self.view.fill((0,0,0))
-            dt = event.time # deltatime
+                self.screen.fill((0,0,0))
+                self.view.fill((0,0,0))
+                dt = event.time # deltatime
             #if dt != 0:
             #    print "FPS:",1000/dt
             
-            speed = 0 if self.world.player.has_pickup("no_hurry") else 2
-            self.viewport.center = ( 400, min(self.viewport.centery - speed * dt, self.world.player.rect.top))
-            
-            if self.viewport.center[1] < self.world.player.rect.top + self.world.player.rect.height - self.world.player.trampoline_height and self.world.player.has_pickup("trampoline"):
-                self.world.player.jump()
-            elif self.viewport.center[1] < self.world.player.rect.top - 300:
-                self.em.tell(PointEvent(int(self.world.player.score+abs(self.world.player.max_height*0.1))))
-            
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_w]:
-                self.viewport.top -= 10
-            elif keys[pygame.K_s]:
-                self.viewport.top += 10
-            if keys[pygame.K_d]:
-                self.viewport.left += 4
-            elif keys[pygame.K_a]:
-                self.viewport.left -= 4
-            
+              
             #self.viewport
             # all the drawing stuff...
-            self.world.update(dt)
-            self.sm.update(dt)
+                self.world.update(dt)
+                self.sm.update(dt)
 
-            font = pygame.font.Font(None, 25)
-            text = font.render("Score: "+str(int(self.world.player.score+abs(self.world.player.max_height*0.1))), True, (255,255,255))
-            self.screen.blit(text, (70, 0))
-            pygame.display.flip()
+                font = pygame.font.Font(None, 25)
+                text = font.render("Score: "+str(int(self.world.player.score+abs(self.world.player.max_height*0.1))), True, (255,255,255))
+                self.screen.blit(text, (70, 0))
+                pygame.display.flip()
 
         elif event.name == 'Destroy':
             pygame.quit()
@@ -166,7 +160,7 @@ class Game(object):
                         text3 = font2.render(str(scores[i][1]), True, (255,255,255))
                         self.screen.blit(text2, (20, 100+50*i))
                         self.screen.blit(text3, (600, 100+50*i))
-
+                pygame.display.flip()
 
 '''
     def endGame(self):        

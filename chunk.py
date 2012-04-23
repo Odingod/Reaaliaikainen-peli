@@ -30,7 +30,7 @@ class Chunk(object):
             obj.update(dt)
 
     def draw(self, screen, viewport):
-        screen.blit(self.background, (0, self.rect.top-viewport.top))
+        
         for obj in self.objects:
             obj.draw(screen, viewport)
         #pygame.draw.rect(screen, pygame.color.Color('red'), (self.rect.left - viewport.left, \

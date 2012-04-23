@@ -53,6 +53,8 @@ class World(object):
         self.player.update(dt)
         
         for chunk in self.chunks:
+            self.game.screen.blit(chunk.background, (0, chunk.rect.top-self.game.viewport.top))
+        for chunk in self.chunks:
             chunk.update(dt)
             chunk.draw(self.game.screen, self.game.viewport)
         
@@ -64,7 +66,7 @@ class World(object):
             # parts of the world
             ChunkCreationThread(self).start()
             
-            if len(self.chunks) > 3:
+            if len(self.chunks) > 10:
                 self.chunks.remove(self.chunks[0])
             
 
@@ -75,8 +77,8 @@ class World(object):
         self.game.viewport.center = (x,y)
     
     def createRandomChunks(self, num = 1):
-        pickup_probability = [10.0, 20.0]
-        pickup_type = ["double_jump", "jumping_power"]
+        pickup_probability = [10.0, 20.0, 10.0, 0.05]
+        pickup_type = ["double_jump", "jumping_power", "trampoline", "no_hurry"]
         
         # 1. Calculate the maximum velocity the player can reach : (delta)velocity = I / m
         velocity = (-self.player.default_jumping_power * Settings.B2SCALE) / self.player.body.mass
@@ -176,6 +178,7 @@ class World(object):
             objects.extend(blocks)
         
             # 9. Create the chunk with the blocks
+
             self.chunks.append(Chunk(self, chunk_pos, Settings.CHUNK_WIDTH, Settings.CHUNK_HEIGHT, objects, self.em))
         
 class ChunkCreationThread(threading.Thread):

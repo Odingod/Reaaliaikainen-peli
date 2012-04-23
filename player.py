@@ -7,7 +7,7 @@ from world import B2SCALE
 HEIGHT = 600
 WIDTH =  800
 
-from pickup import PICKUP_NAMES
+from pickup import PICKUP_NAMES, Pickup
 class Player(Character):
 
     def __init__(self, b2World, eventMgr, pos):
@@ -18,6 +18,7 @@ class Player(Character):
         
         self.keys = [False] * 5
         self.pickups = []
+        self.pickups.append(Pickup("no_hurry", 200))
         
         self.animation_frames = map(pygame.image.load, ["media/nja2_lf1.png", "media/nja2_lf2.png", "media/nja2_rt1.png", "media/nja2_rt2.png", "media/nja2_fr1.png"])
         self.frame_count = 2

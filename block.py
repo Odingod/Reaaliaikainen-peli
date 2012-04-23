@@ -32,4 +32,3 @@ class Block(Actor):
         
     def draw(self, screen, viewport):
         Actor.drawTiled(self, screen, viewport)
-        
