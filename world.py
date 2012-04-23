@@ -77,8 +77,8 @@ class World(object):
         self.game.viewport.center = (x,y)
     
     def createRandomChunks(self, num = 1):
-        pickup_probability = [10.0, 20.0, 10.0, 0.05]
-        pickup_type = ["double_jump", "jumping_power", "trampoline", "no_hurry"]
+        pickup_probability = [10.0, 20.0, 10.0, 0.05, 20.0]
+        pickup_type = ["double_jump", "jumping_power", "trampoline", "no_hurry", "double_points"]
         
         # 1. Calculate the maximum velocity the player can reach : (delta)velocity = I / m
         velocity = (-self.player.default_jumping_power * Settings.B2SCALE) / self.player.body.mass
