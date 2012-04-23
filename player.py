@@ -1,8 +1,10 @@
 from character import Character
 
 import pygame
-import game
 from world import B2SCALE
+
+HEIGHT = 600
+WIDTH =  800
 
 from pickup import PICKUP_NAMES
 class Player(Character):
@@ -100,7 +102,7 @@ class Player(Character):
 
     def draw(self,screen,viewport):
         if self.has_pickup("trampoline"):
-            pygame.draw.line(screen, (0,255,255), (0, game.HEIGHT/2 + self.trampoline_height),(game.WIDTH, game.HEIGHT/2 + self.trampoline_height))
+            pygame.draw.line(screen, (0,255,255), (0, HEIGHT/2 + self.trampoline_height),(WIDTH, HEIGHT/2 + self.trampoline_height))
         Character.draw(self, screen, viewport)
         h = 0
         for pickup in self.pickups:

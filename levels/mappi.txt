@@ -1,6 +1,7 @@
 {
 	"StartChunk" : {
 		"Height": 608,
+        "Background": "media/background.jpg",
 		"Next" : {
 			"UpChunk" : 100
 		},
@@ -18,6 +19,7 @@
 	},
 	"UpChunk" : {
 		"Height": 608,
+        "Background": "media/background.jpg",
 		"Next" : { 
 			"UpChunk" : 100
 		},

@@ -1,4 +1,3 @@
-
 from world import World
 from events import *
 from operator import itemgetter, attrgetter

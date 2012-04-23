@@ -24,6 +24,7 @@ class Chunk(object):
         self.objects = [ ]
         self.next = data["Next"]
         self._buildObjects(data["Objects"])
+        self.background = pygame.image.load(data["Background"]).convert()
 
         
     def update(self, dt):
@@ -31,12 +32,12 @@ class Chunk(object):
             obj.update(dt)
 
     def draw(self, screen, viewport):
-        
+        screen.blit(self.background, (0, self.rect.top-viewport.top))
         for obj in self.objects:
             obj.draw(screen, viewport)
-        pygame.draw.rect(screen, pygame.color.Color('red'), (self.rect.left - viewport.left, \
-            self.rect.top - viewport.top, \
-            self.rect.width, self.rect.height), 2)
+        #pygame.draw.rect(screen, pygame.color.Color('red'), (self.rect.left - viewport.left, \
+        #    self.rect.top - viewport.top, \
+        #    self.rect.width, self.rect.height), 2)
 
     def getNext(self):
         if len(self.next.keys()) == 1:
