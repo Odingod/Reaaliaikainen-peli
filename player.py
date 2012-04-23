@@ -2,6 +2,10 @@ from character import Character
 from settings import Settings
 
 import pygame
+from world import B2SCALE
+
+HEIGHT = 600
+WIDTH =  800
 
 from pickup import PICKUP_NAMES
 class Player(Character):
@@ -14,7 +18,7 @@ class Player(Character):
         
         self.keys = [False] * 5
         self.pickups = []
-
+        
         self.animation_frames = map(pygame.image.load, ["media/nja2_lf1.png", "media/nja2_lf2.png", "media/nja2_rt1.png", "media/nja2_rt2.png", "media/nja2_fr1.png"])
         self.frame_count = 2
         self.image = self.animation_frames[0]
@@ -35,8 +39,13 @@ class Player(Character):
         self.rect.width = 32
         self.rect.height = 32
 
+
         self.jumping_power = 200
         self.default_jumping_power = 200
+
+        self.score = 0.0
+        self.max_height = 0
+        self.trampoline_height = 250
 
         self.createBody(b2World, self.rect.width, self.rect.height )
 
@@ -69,7 +78,7 @@ class Player(Character):
                 self.jump()
                 self.can_double_jump = True
                 self.time_since_jump = 0
-            elif self.can_double_jump and self.has_pickup("double_jump") and self.time_since_jump > 20:
+            elif self.can_double_jump and self.has_pickup("double_jump") and self.time_since_jump > 10:
                 self.jump()
                 self.can_double_jump = False
 
@@ -81,8 +90,13 @@ class Player(Character):
             
         self.going_left = self.body.linearVelocity[0] < -0.1
         self.going_right = self.body.linearVelocity[0] > 0.1
+
         self.update_animation(dt)
         self.update_pickups(dt)
+
+        self.score += 0.01
+        if self.rect.top < self.max_height:
+            self.max_height = self.rect.top
 
     def update_animation(self, dt):
         self.animation_step += dt
@@ -95,6 +109,8 @@ class Player(Character):
             self.image = self.animation_frames[-1]
 
     def draw(self,screen,viewport):
+        if self.has_pickup("trampoline"):
+            pygame.draw.line(screen, (0,255,255), (0, HEIGHT/2 + self.trampoline_height),(WIDTH, HEIGHT/2 + self.trampoline_height))
         Character.draw(self, screen, viewport)
         h = 0
         for pickup in self.pickups:
@@ -133,3 +149,4 @@ class Player(Character):
                 self.keys[4]=event.up
         elif event.name == 'Pickup':
             self.pickups.append(event.pickup)
+            self.score += 10

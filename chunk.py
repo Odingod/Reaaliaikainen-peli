@@ -17,32 +17,25 @@ OBJECTS = {
 class Chunk(object):
 
     em = None
-    '''
-    def __init__(self, world, pos, data, eventMgr):
-        self.rect = Rect(pos[0], pos[1], 800, data["Height"])
-        self.em = eventMgr
-        self.world = world
-        self.objects = [ ]
-        self.next = data["Next"]
-        self._buildObjects(data["Objects"])
-    '''
     def __init__(self, world, pos, width, height, objects, eventMgr):
         self.rect = Rect(pos[0], pos[1], width, height)
         self.em = eventMgr
         self.world = world
         self.objects = objects
+        self.background = pygame.image.load("media/background.jpg").convert()
+
         
     def update(self, dt):
         for obj in self.objects:
             obj.update(dt)
 
     def draw(self, screen, viewport):
-        
+        screen.blit(self.background, (0, self.rect.top-viewport.top))
         for obj in self.objects:
             obj.draw(screen, viewport)
-        pygame.draw.rect(screen, pygame.color.Color('red'), (self.rect.left - viewport.left, \
-            self.rect.top - viewport.top, \
-            self.rect.width, self.rect.height), 2)
+        #pygame.draw.rect(screen, pygame.color.Color('red'), (self.rect.left - viewport.left, \
+        #    self.rect.top - viewport.top, \
+        #    self.rect.width, self.rect.height), 2)
 
     def getNext(self):
         if len(self.next.keys()) == 1:

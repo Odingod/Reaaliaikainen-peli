@@ -47,13 +47,13 @@ class World(object):
         self.b2World.ClearForces()
         
         self.player.update(dt)
-        self.player.draw(self.game.screen, self.game.viewport)
         
         for chunk in self.chunks:
             chunk.update(dt)
             chunk.draw(self.game.screen, self.game.viewport)
         
-        
+        self.player.draw(self.game.screen, self.game.viewport)
+
         if self.chunks[-1].rect.colliderect(self.game.viewport):
             # Spawn a new chunk creating thread, this needs to be handled in its own
             # thread so that the game doesn't jam while we're creating the yet unseen
