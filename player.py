@@ -1,8 +1,9 @@
 from character import Character
 
 import pygame
-
+import game
 from world import B2SCALE
+
 from pickup import PICKUP_NAMES
 class Player(Character):
 
@@ -14,7 +15,7 @@ class Player(Character):
         
         self.keys = [False] * 5
         self.pickups = []
-
+        
         self.animation_frames = map(pygame.image.load, ["media/nja2_lf1.png", "media/nja2_lf2.png", "media/nja2_rt1.png", "media/nja2_rt2.png", "media/nja2_fr1.png"])
         self.frame_count = 2
         self.image = self.animation_frames[0]
@@ -37,6 +38,7 @@ class Player(Character):
 
         self.score = 0.0
         self.max_height = 0
+        self.trampoline_height = 250
 
         self.createBody(b2World, self.rect.width, self.rect.height )
 
@@ -66,7 +68,7 @@ class Player(Character):
                 self.jump()
                 self.can_double_jump = True
                 self.time_since_jump = 0
-            elif self.can_double_jump and self.has_pickup("double_jump") and self.time_since_jump > 20:
+            elif self.can_double_jump and self.has_pickup("double_jump") and self.time_since_jump > 10:
                 self.jump()
                 self.can_double_jump = False
 
@@ -78,9 +80,10 @@ class Player(Character):
             
         self.going_left = self.body.linearVelocity[0] < -0.1
         self.going_right = self.body.linearVelocity[0] > 0.1
+
         self.update_animation(dt)
         self.update_pickups(dt)
-       
+
         self.score += 0.01
         if self.rect.top < self.max_height:
             self.max_height = self.rect.top
@@ -96,6 +99,8 @@ class Player(Character):
             self.image = self.animation_frames[-1]
 
     def draw(self,screen,viewport):
+        if self.has_pickup("trampoline"):
+            pygame.draw.line(screen, (0,255,255), (0, game.HEIGHT/2 + self.trampoline_height),(game.WIDTH, game.HEIGHT/2 + self.trampoline_height))
         Character.draw(self, screen, viewport)
         h = 0
         for pickup in self.pickups:

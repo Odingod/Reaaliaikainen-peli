@@ -2,7 +2,7 @@
 from world import World
 from events import *
 from operator import itemgetter, attrgetter
-
+from soundmanager import SoundManager
 WIDTH = 800
 HEIGHT = 600
 
@@ -19,7 +19,9 @@ class Game(object):
         self.view = pygame.Surface( (WIDTH,HEIGHT) )
         self.viewport = self.view.get_rect()
         pygame.display.set_caption("Game")
-        
+
+        self.sm = SoundManager("media/skeptic.mp3")        
+
         try:
             self.world = World(self, eventMgr)
             self.world.loadLevel("levels/mappi.txt")
@@ -40,7 +42,9 @@ class Game(object):
             
             self.viewport.center = ( 400, self.viewport.centery - 1 * dt)
             
-            if self.viewport.center[1] < self.world.player.rect.top - 300:
+            if self.viewport.center[1] < self.world.player.rect.top + self.world.player.rect.height - self.world.player.trampoline_height and self.world.player.has_pickup("trampoline"):
+              self.world.player.jump()
+            elif self.viewport.center[1] < self.world.player.rect.top - 300:
                 self.em.tell(PointEvent(int(self.world.player.score+abs(self.world.player.max_height*0.1))))
             
             keys = pygame.key.get_pressed()
@@ -56,6 +60,7 @@ class Game(object):
             #self.viewport
             # all the drawing stuff...
             self.world.update(dt)
+            self.sm.update(dt)
 
             font = pygame.font.Font(None, 25)
             text = font.render("Score: "+str(int(self.world.player.score+abs(self.world.player.max_height*0.1))), True, (255,255,255))
@@ -67,6 +72,8 @@ class Game(object):
             pygame.quit()
             return True
         if event.name == 'Point':
+            self.sm.fadeout(3000)
+
             done = False
             scores = []
             name = ""
