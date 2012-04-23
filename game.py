@@ -39,7 +39,8 @@ class Game(object):
             #if dt != 0:
             #    print "FPS:",1000/dt
             
-            self.viewport.center = ( 400, self.viewport.centery - 1 * dt)
+            speed = 0 if self.world.player.has_pickup("no_hurry") else 2
+            self.viewport.center = ( 400, min(self.viewport.centery - speed * dt, self.world.player.rect.top))
             
             if self.viewport.center[1] < self.world.player.rect.top + self.world.player.rect.height - self.world.player.trampoline_height and self.world.player.has_pickup("trampoline"):
               self.world.player.jump()

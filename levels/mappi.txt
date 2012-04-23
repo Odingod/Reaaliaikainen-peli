@@ -14,7 +14,7 @@
 			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 400, "y" : 250, "height": 1, "width":4 },
 			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 500, "y" : 150, "height": 1, "width":4 },
 			{ "class" : "Block", "tile": 1, "tilew": 2, "tileh": 1, "x" : 350, "y" : 50, "height": 1, "width":4 },
-			{ "class" : "Pickup", "x" : 400, "y": 200, "pickup_type": "jumping_power", "duration": 500}
+			{ "class" : "Pickup", "x" : 400, "y": 200, "pickup_type": "no_hurry", "duration": 500}
 		]
 	},
 	"UpChunk" : {

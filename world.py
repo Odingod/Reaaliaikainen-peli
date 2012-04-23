@@ -7,7 +7,7 @@ from chunk import *
 from tileset import *
 
 import player
-
+import game
 class World(object):
 
     chunks = [ ]
@@ -29,7 +29,7 @@ class World(object):
         
         self.chunks.append( self.createChunk("StartChunk") )
         
-        self.player = player.Player( self.b2World, self.em, (100,100) )
+        self.player = player.Player( self.b2World, self.em, (game.WIDTH /2,game.HEIGHT - 100) )
         
     def createChunk(self, name):
         if len(self.chunks) > 0:
