@@ -9,7 +9,7 @@ class Block(Actor):
 
     image = None
     def __init__(self, pos, world, tile, width, height, tilew=1, tileh=1 ):
-        self.rect = pygame.Rect(pos[0], pos[1], width, height) # HUOM: width ja height tileissa
+        self.rect = pygame.Rect(pos, (width, height)) # HUOM: width ja height tileissa
         
         self.tilew = tilew
         self.tileh = tileh

@@ -31,7 +31,6 @@ class Game(object):
         
         self.em.tell("GameStart")
 
-
     def notify(self, event):
         if event.name == 'Tick':
             if not self.game_over:
@@ -44,7 +43,7 @@ class Game(object):
                 speed = 0 if self.world.player.has_pickup("no_hurry") else 0
                 speed += 15 if self.world.player.rect.top - self.viewport.centery < -int( 0.3 * Settings.SCREEN_HEIGHT) else 0
                 center_y = self.viewport.centery - speed * dt
-                self.viewport.center = ( 400, center_y)
+                self.viewport.center = (400, center_y)
 #                print self.viewport.center
                 
                 if self.viewport.center[1] < self.world.player.rect.top + self.world.player.rect.height - self.world.player.trampoline_height and self.world.player.has_pickup("trampoline"):
@@ -148,7 +147,6 @@ class Game(object):
                     self.screen.blit(text2, (20,20))
 
                 else:
-                    
                     font = pygame.font.Font(None, 100)
                     font2 = pygame.font.Font(None, 50)
                     text = font.render("High scores", True, (255,255,255))
@@ -160,23 +158,8 @@ class Game(object):
                         text3 = font2.render(str(scores[i][1]), True, (255,255,255))
                         self.screen.blit(text2, (20, 100+50*i))
                         self.screen.blit(text3, (600, 100+50*i))
+                            
                 pygame.display.flip()
-
-'''
-    def endGame(self):        
-        menu = pygame.Surface((Settings.MENU_WIDTH, Settings.MENU_HEIGHT))
-        menu.fill((0, 0, 255, 0))
-        font = pygame.font.Font("media/FreeSansBold.ttf", 30)
-        txt = font.render("Game over", 1, (255, 255, 255, 0))
-        menu.blit(txt, ((Settings.MENU_WIDTH - txt.get_width())/2, (Settings.MENU_WIDTH - txt.get_height())/2))
-        
-        self.screen.blit( menu, ((Settings.SCREEN_WIDTH - Settings.MENU_WIDTH)/2, (Settings.SCREEN_HEIGHT-Settings.MENU_HEIGHT)/2) )
-        self.game_over = True
-        print "Game over!"
-'''
-    #pygame.display.flip()
-
-    #self.em.tell('Quit')
 
 if __name__ == "__main__":
     import main

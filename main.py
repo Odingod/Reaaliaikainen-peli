@@ -9,7 +9,6 @@ class Keyboard:
         self.em = eventmanager
         self.em.register(self)
     
-    
     def notify(self,event):
         if event.name == 'Tick':
             for e in pygame.event.get():
@@ -41,7 +40,6 @@ class Mainloop:
             while self.running: 
                 scale = self.clock.tick(60) * 60 / 1000
                 self.em.tell(TickEvent(scale))
-                #print self.clock.get_fps()
         finally:
             self.em.tell('Destroy')
             
