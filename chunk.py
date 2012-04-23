@@ -17,6 +17,7 @@ OBJECTS = {
 class Chunk(object):
 
     em = None
+    '''
     def __init__(self, world, pos, data, eventMgr):
         self.rect = Rect(pos[0], pos[1], 800, data["Height"])
         self.em = eventMgr
@@ -24,7 +25,12 @@ class Chunk(object):
         self.objects = [ ]
         self.next = data["Next"]
         self._buildObjects(data["Objects"])
-
+    '''
+    def __init__(self, world, pos, width, height, objects, eventMgr):
+        self.rect = Rect(pos[0], pos[1], width, height)
+        self.em = eventMgr
+        self.world = world
+        self.objects = objects
         
     def update(self, dt):
         for obj in self.objects:

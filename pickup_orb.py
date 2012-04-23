@@ -4,7 +4,9 @@ from actor import Actor
 from world import B2SCALE
 from events import PickupEvent
 from pickup import Pickup
+
 class PickupOrb(Actor):
+    
     def __init__(self, pos, world, eventMgr, pickup_type, duration):
         Actor.__init__(self)
         self.em = eventMgr

@@ -1,9 +1,5 @@
-
+from settings import Settings
 from world import World
-
-WIDTH = 800
-HEIGHT = 600
-
 import pygame
 
 class Game(object):
@@ -13,8 +9,8 @@ class Game(object):
         self.em.register(self)
         pygame.init()
         self.game_over = False
-        self.screen = pygame.display.set_mode( (WIDTH,HEIGHT) )
-        self.view = pygame.Surface( (WIDTH,HEIGHT) )
+        self.screen = pygame.display.set_mode( (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT) )
+        self.view = pygame.Surface( (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT) )
         self.viewport = self.view.get_rect()
         pygame.display.set_caption("Game")
         
@@ -28,7 +24,7 @@ class Game(object):
         self.em.tell("GameStart")
 
 
-    def notify(self,event):
+    def notify(self, event):
         if event.name == 'Tick':
             if not self.game_over:
                 self.screen.fill((0,0,0))
@@ -55,8 +51,8 @@ class Game(object):
                 
                 # The player is considered dead if the players y-coordinate is bigger
                 # than the y-coordinate of the bottom of the view            
-                if (self.world.player.rect.topleft[1] > self.viewport.bottomleft[1]):
-                    self.endGame()
+                #if (self.world.player.rect.topleft[1] > self.viewport.bottomleft[1]):
+                    #self.endGame()
             
             pygame.display.flip()
 
@@ -65,18 +61,14 @@ class Game(object):
             return True
 
 
-    def endGame(self):
-        MENU_WIDTH = WIDTH/2
-        MENU_HEIGHT = HEIGHT/2
-        
-        menu = pygame.Surface((MENU_WIDTH, MENU_HEIGHT))
+    def endGame(self):        
+        menu = pygame.Surface((Settings.MENU_WIDTH, Settings.MENU_HEIGHT))
         menu.fill((0, 0, 255, 0))
-        
         font = pygame.font.Font("media/FreeSansBold.ttf", 30)
         txt = font.render("Game over", 1, (255, 255, 255, 0))
-        menu.blit(txt, ((MENU_WIDTH - txt.get_width())/2, (MENU_WIDTH - txt.get_height())/2))
+        menu.blit(txt, ((Settings.MENU_WIDTH - txt.get_width())/2, (Settings.MENU_WIDTH - txt.get_height())/2))
         
-        self.screen.blit(menu, ((WIDTH-MENU_WIDTH)/2, (HEIGHT-MENU_HEIGHT)/2))
+        self.screen.blit( menu, ((Settings.SCREEN_WIDTH - Settings.MENU_WIDTH)/2, (Settings.SCREEN_HEIGHT-Settings.MENU_HEIGHT)/2) )
         self.game_over = True
         print "Game over!"
 

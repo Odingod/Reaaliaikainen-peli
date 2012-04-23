@@ -1,8 +1,8 @@
 from character import Character
+from settings import Settings
 
 import pygame
 
-from world import B2SCALE
 from pickup import PICKUP_NAMES
 class Player(Character):
 
@@ -35,6 +35,9 @@ class Player(Character):
         self.rect.width = 32
         self.rect.height = 32
 
+        self.jumping_power = 200
+        self.default_jumping_power = 200
+
         self.createBody(b2World, self.rect.width, self.rect.height )
 
         
@@ -46,18 +49,21 @@ class Player(Character):
             if c.manifold.localNormal[1] < -0.9:
                 return True
         return False
+    
+    
     def jump(self):
-        jumping_power = 300 if self.has_pickup("jumping_power") else 200
-        self.body.ApplyLinearImpulse(impulse=(0, -jumping_power * B2SCALE), point=(0,0))
+        self.jumping_power = 300 if self.has_pickup("jumping_power") else 200
+        self.body.ApplyLinearImpulse(impulse=(0, -self.jumping_power * Settings.B2SCALE), point=(0,0))
+        
 
     def update(self, dt):
         Character.update(self, dt)
         self.midair = abs(self.body.linearVelocity[1]) > 0.01
         self.time_since_jump += dt
         if self.keys[2]:
-            self.body.linearVelocity = (-400 * B2SCALE, self.body.linearVelocity[1] )
+            self.body.linearVelocity = (-400 * Settings.B2SCALE, self.body.linearVelocity[1] )
         if self.keys[3]:
-            self.body.linearVelocity = (400 * B2SCALE, self.body.linearVelocity[1] )
+            self.body.linearVelocity = (400 * Settings.B2SCALE, self.body.linearVelocity[1] )
         if self.keys[1]:
             if not self.midair:
                 self.jump()
