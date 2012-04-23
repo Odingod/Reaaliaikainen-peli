@@ -1,6 +1,5 @@
 from settings import Settings
 from world import World
-from world import World
 from events import *
 from operator import itemgetter, attrgetter
 from soundmanager import SoundManager
@@ -62,6 +61,15 @@ class Game(object):
                 # than the y-coordinate of the bottom of the view            
                 #if (self.world.player.rect.topleft[1] > self.viewport.bottomleft[1]):
                     #self.endGame()
+           
+            self.screen.fill((0,0,0))
+            self.view.fill((0,0,0))
+            dt = event.time # deltatime
+            #if dt != 0:
+            #    print "FPS:",1000/dt
+            
+            speed = 0 if self.world.player.has_pickup("no_hurry") else 2
+            self.viewport.center = ( 400, min(self.viewport.centery - speed * dt, self.world.player.rect.top))
             
             if self.viewport.center[1] < self.world.player.rect.top + self.world.player.rect.height - self.world.player.trampoline_height and self.world.player.has_pickup("trampoline"):
                 self.world.player.jump()

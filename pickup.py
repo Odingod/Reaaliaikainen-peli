@@ -1,7 +1,8 @@
 PICKUP_NAMES = {
     "jumping_power": "Jumping Power",
     "double_jump": "Double Jump",
-    "trampoline": "Trampoline"
+    "trampoline": "Trampoline",
+    "no_hurry": "No Hurry"
 }
 class Pickup:
     def __init__(self, pickup_type, duration):
