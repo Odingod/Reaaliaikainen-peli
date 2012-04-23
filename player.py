@@ -95,7 +95,7 @@ class Player(Character):
         self.update_animation(dt)
         self.update_pickups(dt)
 
-        self.score += 0.01
+        self.score += 0.01*(2**self.pickup_count("double_points"))
         if self.rect.top < self.max_height:
             self.max_height = self.rect.top
 
@@ -132,7 +132,8 @@ class Player(Character):
 
     def has_pickup(self, pickup_type):
         return pickup_type in [pickup.pickup_type for pickup in self.pickups]
-
+    def pickup_count(self, pickup_type):
+        return reduce(lambda y,x: y + 1 if x == pickup_type else y,[pickup.pickup_type for pickup in self.pickups], 0)
     def notify(self, event):
         if event.name == 'Keyboard':
             key = event.key
@@ -150,4 +151,4 @@ class Player(Character):
                 self.keys[4]=event.up
         elif event.name == 'Pickup':
             self.pickups.append(event.pickup)
-            self.score += 10
+            self.score += 10*(2**self.pickup_count("double_points"))
