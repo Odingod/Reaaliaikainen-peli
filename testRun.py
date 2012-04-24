@@ -71,8 +71,21 @@ class TestTileset(unittest.TestCase):
         testTileGame = tileset.getTile(i)
         
         # self.assertEqual(testTileGame, testTileTest)
-        # Kuvien vertailu keskenään on aika vaikeaa...
+        # Kuvien vertailu keskenaan on aika vaikeaa...
         
+#testin tehnyt erika salmivaara    
+class TestPlayer(unittest.TestCase):
+
+	def setUp(self):
+	    self.player = Player(Box2D.b2World( gravity=(0,40), doSleep=True), EventManager(), (0, 0))
+	    self.pickup = Pickup(PICKUP_NAMES["trampoline"],100)
+	    self.event = PickupEvent(self.pickup)
+
+	def testNotify(self):
+		self.assertEqual(len(self.player.pickups), 1)
+		self.player.notify(self.event)
+		self.assertEqual(self.player.pickups[1], self.pickup)
+		self.assertEqual(self.player.score, 10)
 
         
         
@@ -82,3 +95,5 @@ if __name__ == '__main__':
 	unittest.TextTestRunner(verbosity=2).run(suite)
         suite = unittest.TestLoader().loadTestsFromTestCase(TestTileset)
         unittest.TextTestRunner(verbosity=2).run(suite)
+    	suite = unittest.TestLoader().loadTestsFromTestCase(TestPlayer)
+     	unittest.TextTestRunner(verbosity=2).run(suite)
