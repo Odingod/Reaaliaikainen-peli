@@ -48,7 +48,7 @@ class Mainloop:
             self.running = False
             return True
         elif event.name == 'Tick':
-             pass
+            pass
 
 def main():
     em = EventManager()

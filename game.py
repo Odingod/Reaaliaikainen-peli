@@ -40,7 +40,7 @@ class Game(object):
                 #if dt != 0:
                 #    print "FPS:",1000/dt
               
-                speed = 0 if self.world.player.has_pickup("no_hurry") else 0
+                speed = 0 if self.world.player.has_pickup("no_hurry") else 1
                 speed += 15 if self.world.player.rect.top - self.viewport.centery < -int( 0.3 * Settings.SCREEN_HEIGHT) else 0
                 center_y = self.viewport.centery - speed * dt
                 self.viewport.center = (400, center_y)

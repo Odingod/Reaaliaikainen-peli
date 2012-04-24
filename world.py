@@ -80,8 +80,9 @@ class World(object):
         # Calculate the maximum Y distance with the calculated velocity: v^2/2g
         Y_DIST_MAX = ((((velocity*velocity)/(2*self.b2World.gravity.y))/Settings.B2SCALE) * -1)/2.5
         
-        # Minimum Y distance will be the player's height + a tolerance of 10
-        Y_DIST_MIN = ((self.player.rect.height)*-1) - 10
+        # Minimum Y distance will be the player's height + TILESIZE + tolerance of 5, this ensures
+        # that the player can always fit between the blocks
+        Y_DIST_MIN = ((self.player.rect.height)*-1) - TILESIZE - 5
         
         for i in range(num):
             # Determine the position of the new chunk
@@ -99,14 +100,13 @@ class World(object):
                 floor = Block((32, 544), self, 0, 23, 2)
                 blocks.append(floor)
             
-            
             # Initialize reachable height, describes the height the player can reach
             # with the current blocks and jump power
             reachable_height = 0.0
             
             while (abs(reachable_height) < abs(chunk_pos[1]) + abs(Settings.CHUNK_HEIGHT)):
                 # Initialize block parameters, can be randomized if necessary
-                BLOCK_WIDTH = random.randint(3, 10)
+                BLOCK_WIDTH = random.randint(3, 12)
                 BLOCK_HEIGHT = 1
                 BLOCK_TILE = 1
                 
@@ -116,7 +116,7 @@ class World(object):
                 # block in this chunk
                 if (len(blocks) > 0):
                     Y_MIN = Y_DIST_MIN + blocks[-1].rect.top 
-                    Y_MAX = Y_DIST_MAX + blocks[-1].rect.top 
+                    Y_MAX = Y_DIST_MAX + blocks[-1].rect.top
                 # If there were no blocks and there are other chunks the interval is relative
                 # to the last block of the previous chunk
                 elif (len(self.chunks) > 0):
@@ -132,20 +132,24 @@ class World(object):
                 block_y = random.uniform(Y_MIN, Y_MAX)
                 
                 # Calculate the maximum X distance for the given Y coordinate
-                k = 4.0
-                temp = k * (abs(Y_MAX) - abs(block_y))
+                #time = velocity / self.b2World.gravity.y
+                #horDistPeak = time * self.player.xspeed
+                #horDistLevel = 2 * horDistPeak
+                #r = (Y_MAX - block_y) / Y_DIST_MAX
+                #X_DIST_MAX = horDistLevel * (1+r)
+                X_DIST_MAX = self.player.xspeed * velocity / self.b2World.gravity.y * (1 + (Y_MAX -block_y)/Y_DIST_MAX)
                 
                 # Determine an interval [X_MIN, X_MAX]
                 if (len(blocks) > 0):
-                    X_MIN = blocks[-1].rect.right - blocks[-1].rect.width - temp
-                    X_MAX = blocks[-1].rect.left + blocks[-1].rect.width + temp
+                    X_MIN = blocks[-1].rect.right - blocks[-1].rect.width - X_DIST_MAX
+                    X_MAX = blocks[-1].rect.left + blocks[-1].rect.width + X_DIST_MAX
                 elif (len(self.chunks) > 0):
-                    X_MIN = self.chunks[-1].objects[-3].rect.right - self.chunks[-1].objects[-3].rect.width - temp
-                    X_MAX = self.chunks[-1].objects[-3].rect.left + self.chunks[-1].objects[-3].rect.width + temp
+                    X_MIN = self.chunks[-1].objects[-3].rect.right - self.chunks[-1].objects[-3].rect.width - X_DIST_MAX
+                    X_MAX = self.chunks[-1].objects[-3].rect.left + self.chunks[-1].objects[-3].rect.width + X_DIST_MAX
                 else:
                     X_MIN = TILESIZE
                     X_MAX = Settings.CHUNK_WIDTH - (BLOCK_WIDTH * (TILESIZE+1))
-                    
+                   
                 # Sanity check for the X interval
                 if (X_MIN < TILESIZE):
                     X_MIN = TILESIZE
@@ -164,7 +168,7 @@ class World(object):
                     pickups.append(PickupOrb((blocks[-1].rect.centerx, blocks[-1].rect.centery - 34), self, self.em, pickup_type[pup], 500))
 
                 # Update the reachable height
-                reachable_height = block_y + Y_DIST_MAX 
+                reachable_height = block_y + Y_DIST_MAX
             
             # Create and append the walls of the chunk
             left_wall = Block((0, chunk_pos[1]), self, 0, 1, 19)

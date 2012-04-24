@@ -40,7 +40,7 @@ class Player(Character):
         self.rect.width = 32
         self.rect.height = 32
 
-
+        self.xspeed = 400
         self.jumping_power = 200
         self.default_jumping_power = 200
 
@@ -71,9 +71,9 @@ class Player(Character):
         self.midair = abs(self.body.linearVelocity[1]) > 0.01
         self.time_since_jump += dt
         if self.keys[2]:
-            self.body.linearVelocity = (-400 * Settings.B2SCALE, self.body.linearVelocity[1] )
+            self.body.linearVelocity = (-self.xspeed * Settings.B2SCALE, self.body.linearVelocity[1] )
         if self.keys[3]:
-            self.body.linearVelocity = (400 * Settings.B2SCALE, self.body.linearVelocity[1] )
+            self.body.linearVelocity = (self.xspeed * Settings.B2SCALE, self.body.linearVelocity[1] )
         if self.keys[1]:
             if not self.midair:
                 self.jump()
