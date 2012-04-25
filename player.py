@@ -100,7 +100,7 @@ class Player(Character):
             self.max_height = self.rect.top
 
     def update_animation(self, dt):
-        self.animation_step += dt
+        self.animation_step += int(dt)
         self.frame = (self.animation_step / self.frame_interval) % self.frame_count
         if self.going_left:
             self.image = self.animation_frames[self.frame]
