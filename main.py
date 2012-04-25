@@ -1,4 +1,3 @@
-
 from game import Game
 from events import *
 
@@ -38,7 +37,7 @@ class Mainloop:
         try:
             self.running = True
             while self.running: 
-                scale = self.clock.tick(60) * 60 / 1000
+                scale = self.clock.tick(60) * 60 / 1000.0
                 self.em.tell(TickEvent(scale))
         finally:
             self.em.tell('Destroy')
