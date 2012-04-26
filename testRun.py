@@ -17,7 +17,7 @@ from                        platform import    *   #--          -     .-  .   ..
 from                character import    *   #------/ .   .  .. .       . .  .  -. --m          .    -      |                                -     -
 from       pickup_orb  import    *   #-------+--    .+   -.+. .m.       .-..%..  .-m-  .     -.+   . %     | _______ _______ _______  ______      |
 from  events import       * #---------+/-          -..  .  .    ..     .+.-m  .   .  . .     +..    .. ..  | |______    |    |_____| |_____/      |
-                    #                .   .               . .   ..       -.  . .  . .       .               |  ______|   |    |     | |    \_      |
+import sys          #                .   .               . .   ..       -.  . .  . .       .               |  ______|   |    |     | |    \_      |
 #+-----------+      #                    ..        .-m- % .- +  .. + .  --m-  . .. -  + ... ..... . . +....|                                      |
 #+------+           #                 .+.              +-   .    -+ .     .       .% .  .  .       . ..+  -+--------------------------------------+
 #----------+        #                  . -.          .  . .   .-.-..    -        .              .      . . ..*...    .           . .
@@ -91,8 +91,33 @@ class TestPlayer(unittest.TestCase):
 		self.assertEqual(self.player.pickups[1], self.pickup)
 		self.assertEqual(self.player.score, 10)
 
+#Testin tehnyt Pekka Alli 84094A
+class TestPlayerProperties(unittest.TestCase):
 
+    def setUp(self):
+            self.player = Player(Box2D.b2World( gravity=(0,40), doSleep=True), EventManager(), (0, 0))
+            self.em = EventManager()
+            self.game = Game(self.em)
+            self.world = World(self.game, self.em)
+                
+    def testPlayerInit(self):
+            self.assertEqual(len(self.player.pickups), 1)
+            self.assertEqual(self.player.score, 0.0)
+            self.assertEqual(self.player.max_height, 0)
 
+    def testPlayerProperties(self):
+        em = EventManager()
+        gw = Game(em)
+        kb = Keyboard(em)
+        ml = Mainloop(em)
+        ml.run()
+        
+        self.assertEqual(gw.world.player.max_height, 0)
+        if gw.world.player.canJump():
+            gw.world.player.jump()
+            self.assertNotEqual(gw.world.player.max_height, 0, "")
+            
+        
 #testin tehnyt Otto Tuominen 298647
 class TestWorld(unittest.TestCase):
 
@@ -124,3 +149,5 @@ if __name__ == '__main__':
      	unittest.TextTestRunner(verbosity=2).run(suite)
         suite = unittest.TestLoader().loadTestsFromTestCase(TestWorld)
      	unittest.TextTestRunner(verbosity=2).run(suite)
+        suite = unittest.TestLoader().loadTestsFromTestCase(TestPlayerProperties)
+        unittest.TextTestRunner(verbosity=2).run(suite)
